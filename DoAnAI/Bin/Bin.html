@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thùng Rác</title>
+  
+    <link rel="stylesheet" href="Bin.css">
+</head>
+<body>
+    <div id="layout-container"></div>
+    <main>
+        <div class="class-h">
+            <h1>Thùng Rác</h1>
+        </div>
+        <div class="class-grid">
+            <!-- Video sẽ được thêm từ JavaScript -->
+        </div>
+    </main>
+
+    <script>
+      // Tải layout
+ fetch("../layout.php")
+ .then(response => response.text())
+ .then(data => {
+     document.getElementById("layout-container").innerHTML = data;
+     initializeLayout();
+ })
+ .catch(error => console.error("Lỗi tải layout:", error));
+
+function initializeLayout() {
+ // Thêm sự kiện click để hiển thị/tắt danh sách lớp
+ const menuToggle = document.querySelector(".menu-item");
+ const classList = document.getElementById("class-list");
+
+ if (menuToggle && classList) {
+    menuToggle.addEventListener("click", () => {
+        // Toggle hiển thị danh sách lớp
+        classList.style.display = classList.style.display === "block" ? "none" : "block";
+    });
+}
+const logoutButton = document.querySelector(".logout-btn");
+if (logoutButton) {
+logoutButton.addEventListener("click", () => {
+fetch("../Login/logout.php", { method: "POST" })
+    .then(response => {
+        if (!response.ok) throw new Error("Lỗi khi đăng xuất.");
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Xóa session và chuyển về trang đăng nhập
+            window.location.href = "../Login/log-in.html";
+        } else {
+            alert(data.message || "Đăng xuất thất bại.");
+        }
+    })
+    .catch(error => alert("Có lỗi xảy ra: " + error.message));
+});
+}
+}
+
+        // Hàm tải video từ thùng rác
+        function loadDeletedVideos() {
+            fetch("get_deleted_videos.php")
+                .then(response => response.json())
+                .then(data => {
+                    const grid = document.querySelector(".class-grid");
+                    grid.innerHTML = "";
+                    data.forEach(video => {
+                        const videoItem = document.createElement("div");
+                        videoItem.classList.add("class-item");
+                        videoItem.innerHTML = `
+                            <video src="../Class/${video.video_path}" controls></video>
+                            <button class="restore-button" onclick="restoreVideo(${video.id})">Khôi phục</button>
+                            <button class="delete-button" onclick="deleteVideoPermanently(${video.id})">Xóa vĩnh viễn</button>
+                        `;
+                        grid.appendChild(videoItem);
+                    });
+                })
+                .catch(error => console.error("Lỗi:", error));
+        }
+
+        // Hàm khôi phục video
+        function restoreVideo(id) {
+            fetch(`bin_handler.php?id=${id}&action=restore`, {
+                method: "POST",
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    loadDeletedVideos();
+                })
+                .catch(error => console.error("Lỗi:", error));
+        }
+
+        // Hàm xóa vĩnh viễn video
+        function deleteVideoPermanently(id) {
+            if (confirm("Bạn có chắc chắn muốn xóa vĩnh viễn video này?")) {
+                fetch(`bin_handler.php?id=${id}&action=delete_permanently`, {
+                    method: "DELETE",
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert(data);
+                        loadDeletedVideos();
+                    })
+                    .catch(error => console.error("Lỗi:", error));
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadDeletedVideos);
+    </script>
+</body>
+</html>
+
+
+

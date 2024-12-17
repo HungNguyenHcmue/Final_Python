@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lớp A</title>
+    <link rel="stylesheet" href="../layout.css">
+    <link rel="stylesheet" href="Class.css">
+</head>
+<body>
+    <div id="layout-container"></div>
+    <main>
+        <div class="class-h">
+            <h1>Lớp A</h1>
+        </div>
+        <div class="class-grid">
+            <!-- Video sẽ được thêm từ JavaScript -->
+        </div>
+        <!-- Nút thêm video -->
+        <button class="add-new" onclick="document.getElementById('uploadInput').click()">+</button>
+        <input type="file" id="uploadInput" accept="video/*" style="display: none;" onchange="uploadVideo(event)">
+    </main>
+
+    <script>
+       // Tải layout từ file layout.html
+       fetch("../layout.php")
+       .then(response => response.text())
+       .then(data => {
+           document.getElementById("layout-container").innerHTML = data;
+           initializeLayout(); // Gọi hàm khởi tạo các chức năng liên quan
+       })
+       .catch(error => console.error("Lỗi tải layout:", error));
+
+   function initializeLayout() {
+       loadVideos(); // Gọi hàm tải video sau khi tải layout
+       const menuToggle = document.querySelector(".menu-item");
+       const classList = document.getElementById("class-list");
+
+       if (menuToggle && classList) {
+           menuToggle.addEventListener("click", () => {
+               // Toggle hiển thị danh sách lớp
+               classList.style.display = classList.style.display === "block" ? "none" : "block";
+           });
+       }
+       const logoutButton = document.querySelector(".logout-btn");
+   if (logoutButton) {
+   logoutButton.addEventListener("click", () => {
+       fetch("../Login/logout.php", { method: "POST" })
+           .then(response => {
+               if (!response.ok) throw new Error("Lỗi khi đăng xuất.");
+               return response.json();
+           })
+           .then(data => {
+               if (data.success) {
+                   // Xóa session và chuyển về trang đăng nhập
+                   window.location.href = "../Login/log-in.html";
+               } else {
+                   alert(data.message || "Đăng xuất thất bại.");
+               }
+           })
+           .catch(error => alert("Có lỗi xảy ra: " + error.message));
+   });
+   }
+}
+        // Hàm tải danh sách video
+        function loadVideos() {
+            fetch("get_videos.php?class_name=Class A")
+                .then(response => response.json())
+                .then(data => {
+                    const grid = document.querySelector(".class-grid");
+                    grid.innerHTML = ""; 
+                    data.forEach(video => {
+                        const videoItem = document.createElement("div");
+                        videoItem.classList.add("class-item");
+                        videoItem.innerHTML = `
+                            <video src="${video.video_path}" controls onclick="navigateToDetail(${video.id})"></video>
+                            <button class="delete-button" onclick="deleteVideo(${video.id})">Xóa</button>
+                        `;
+                        grid.appendChild(videoItem);
+                    });
+                })
+                .catch(error => console.error("Lỗi:", error));
+        }
+
+        // Hàm tải video lên
+        function uploadVideo(event) {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append("video", file);
+            formData.append("class_name", "Class A");
+
+            fetch("video_handler.php", {
+                method: "POST",
+                body: formData,
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    loadVideos();
+                })
+                .catch(error => console.error("Lỗi:", error));
+        }
+
+        // Hàm xóa video
+        function deleteVideo(id) {
+            fetch(`video_handler.php?id=${id}`, {
+                method: "DELETE",
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    loadVideos();
+                })
+                .catch(error => console.error("Lỗi:", error));
+        }
+
+        function navigateToDetail(videoId) {
+    // Lưu videoId vào sessionStorage để điều hướng sang trang chi tiết
+    sessionStorage.setItem('selectedVideoId', videoId);
+
+    // Lấy danh sách video từ localStorage
+    let recentVideos = JSON.parse(localStorage.getItem('recentVideos')) || [];
+
+    // Thêm videoId mới vào đầu danh sách, tránh trùng lặp
+    if (!recentVideos.includes(videoId)) {
+        recentVideos.unshift(videoId);
+    }
+
+    // Giới hạn danh sách tối đa 5 video gần nhất
+    recentVideos = recentVideos.slice(0, 5);
+
+    // Lưu lại danh sách vào localStorage
+    localStorage.setItem('recentVideos', JSON.stringify(recentVideos));
+
+    
+    
+}
+document.querySelectorAll('video').forEach(video => {
+    video.addEventListener('click', async (event) => {
+        try {
+            console.log('Video clicked');
+            
+            const videoElement = event.target;
+            const videoSrc = videoElement.src;
+
+            // Fetch the video blob
+            const videoBlob = await fetch(videoSrc).then(response => {
+                if (!response.ok) throw new Error('Failed to fetch video');
+                return response.blob();
+            });
+
+            // Prepare FormData with the video blob
+            const formData = new FormData();
+            formData.append('video', videoBlob, 'video.mp4'); // Customize the file name if needed
+
+            // Send the video blob to the API
+            const response = await fetch('http://127.0.0.1:8000/upload_video/', {
+                method: 'POST',
+                body: formData
+            });
+
+            // Handle the server response
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Video uploaded successfully', data);
+            } else {
+                console.error('Failed to upload video. Status:', response.status);
+            }
+        } catch (error) {
+            console.error('Error during video upload:', error.message);
+        }
+    });
+});
+
+
+document.querySelector('.class-grid').addEventListener('click', async (event) => {
+   
+    // Kiểm tra nếu phần tử được click là video
+    if (event.target.tagName.toLowerCase() === 'video') {
+        const videoElement = event.target;
+        const videoSrc = videoElement.src;
+
+        // Tạo đối tượng FormData để gửi video qua request
+        const formData = new FormData();
+        
+        try {
+            // Lấy video từ đường dẫn (src) và chuyển nó thành Blob
+            const videoBlob = await fetch(videoSrc).then(response => response.blob());
+
+            // Thêm video vào FormData
+            formData.append('file', videoBlob, 'video.mp4'); // Đổi tên file tùy ý
+            
+            // Gửi video qua API
+            const response = await fetch('http://127.0.0.1:8000/upload_video/', {
+                method: 'POST',
+                body: formData
+            });
+
+            // Xử lý phản hồi từ server
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Video uploaded successfully', data);
+                window.location.href = "../TraKetQua/TraVe.html";
+            } else {
+                console.error('Failed to upload video');
+                const errorData = await response.json();
+                console.error('Error details:', errorData);
+            }
+        } catch (error) {
+            console.error('Error during video upload', error);
+        }
+    }
+  
+});
+        // Gọi loadVideos khi trang được tải
+        document.addEventListener("DOMContentLoaded", loadVideos);
+    </script>
+</body>
+</html>

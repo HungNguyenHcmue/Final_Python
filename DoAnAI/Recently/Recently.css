@@ -1,0 +1,78 @@
+/* Đảm bảo rằng body có không gian hợp lý */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+header h1 {
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    font-size: 24px;
+}
+
+/* Container chính của các video */
+.recent-videos-container {
+    display: grid; /* Sử dụng Grid Layout */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Đảm bảo phân bổ đều các video */
+    gap: 15px; /* Khoảng cách giữa các video */
+    padding: 10px; /* Khoảng cách bên trong container */
+    justify-items: stretch; /* Các video kéo dài để thẳng hàng */
+}
+
+/* Video item */
+.recent-video-item {
+    border: 1px solid #ddd; /* Viền xung quanh video */
+    border-radius: 8px; /* Bo góc khung video */
+    padding: 10px; /* Khoảng cách bên trong */
+    background-color: #f9f9f9; /* Màu nền nhạt */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng */
+    text-align: center; /* Căn giữa nội dung */
+    display: flex; /* Dùng flex để căn chỉnh nội dung */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Đảm bảo các phần tử có chiều cao giống nhau */
+}
+
+/* Video */
+.recent-video-item video {
+    width: 100%; /* Chiều rộng 100% của khung video */
+    max-width: 200px; /* Kích thước tối đa */
+    height: auto; /* Tự động tỷ lệ */
+    margin-bottom: 10px; /* Khoảng cách giữa video và nội dung bên dưới */
+}
+
+/* Nút xóa video */
+.recent-video-item .delete-btn {
+    background-color: #ff4d4f; /* Màu đỏ nổi bật */
+    color: white; /* Màu chữ */
+    border: none; /* Loại bỏ viền nút */
+    padding: 5px 10px; /* Kích thước nút */
+    border-radius: 4px; /* Bo góc nút */
+    font-size: 14px; /* Kích thước chữ nút */
+    cursor: pointer; /* Con trỏ chuột khi hover */
+    transition: background-color 0.3s ease; /* Hiệu ứng khi hover */
+}
+
+.recent-video-item .delete-btn:hover {
+    background-color: #d9363e; /* Màu đỏ đậm hơn khi hover */
+}
+
+/* Căn chỉnh khoảng trống container */
+body {
+    margin: 0; /* Loại bỏ khoảng cách mặc định của trình duyệt */
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    padding: 10px; /* Khoảng cách bên trong main */
+}
+
+/* Xóa khoảng trống giữa các phần tử grid */
+.recent-videos-container {
+    margin: 0 auto; /* Căn giữa container */
+}

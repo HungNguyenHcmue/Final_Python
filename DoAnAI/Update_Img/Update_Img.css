@@ -1,0 +1,157 @@
+/* Reset mặc định */
+body, h1, h3, form, input, button, div {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Thiết lập chung */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+main {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.class-h h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Form cập nhật hình ảnh */
+#update-img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#update-img h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+#update-img-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+#update-img-form input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 80%;
+    max-width: 400px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#update-img-form input[type="file"]:hover,
+#update-img-form input[type="file"]:focus {
+    border-color: #007bff;
+}
+
+#update-img-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#update-img-form button:hover {
+    background: #0056b3;
+}
+
+/* Layout container */
+#layout-container {
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    main {
+        padding: 15px;
+    }
+
+    #update-img-form input[type="file"] {
+        width: 100%;
+    }
+}
+/* Toast styles */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 250px;
+    padding: 15px 20px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 14px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.toast.success {
+    background-color: #28a745;
+}
+
+.toast.error {
+    background-color: #dc3545;
+}
+/* Định dạng container xem trước */
+#preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Định dạng ảnh xem trước */
+#preview-avatar {
+    max-width: 300px; /* Tăng kích thước chiều rộng */
+    max-height: 300px; /* Tăng kích thước chiều cao */
+    border-radius: 50%; /* Hiển thị dưới dạng hình tròn */
+    object-fit: cover; /* Giữ tỷ lệ ảnh */
+    border: 3px solid #ccc; /* Đường viền lớn hơn */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng */
+}
+
+/* Định dạng nút bấm */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

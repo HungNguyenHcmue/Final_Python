@@ -1,0 +1,59 @@
+/* Cấu trúc thông tin cá nhân */
+.profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #a0b4de;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.profile-img img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.profile-info h1 {
+    color: #374785;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    color: #24305e;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* Nút chức năng */
+.profile-buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.profile-buttons button {
+    background-color: #374785;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-buttons button:hover {
+    background-color: #24305e;
+}
+
+/* Không thêm các phần đã có trong layout.css như sidebar, header, v.v. */

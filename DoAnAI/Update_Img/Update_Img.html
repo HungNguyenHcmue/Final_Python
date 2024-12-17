@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập Nhật Hình Ảnh</title>
+    <link rel="stylesheet" href="Update_Img.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <!-- Container sẽ được tải layout -->
+    <div id="layout-container"></div>
+
+    <main>
+        <div class="class-h">
+            <h1>Cập Nhật Hình Ảnh</h1>
+        </div>
+
+        <div id="update-img">
+            <form id="update-img-form" enctype="multipart/form-data">
+                <!-- Thẻ ảnh để xem trước -->
+                <div id="preview-container">
+                    <img id="preview-avatar" src="../Img/Avatar.png" alt="Avatar Preview">
+                </div>
+                <input type="file" name="avatar" id="avatar" accept="image/*" required>
+                <button type="button" id="submit-btn">Cập nhật hình ảnh</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Tải layout
+        fetch("../layout.php")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("layout-container").innerHTML = data;
+                initializeLayout();
+            })
+            .catch(error => console.error("Lỗi tải layout:", error));
+
+        function initializeLayout() {
+            // Thêm sự kiện click để hiển thị/tắt danh sách lớp
+            const menuToggle = document.querySelector(".menu-item");
+            const classList = document.getElementById("class-list");
+
+            if (menuToggle && classList) {
+                menuToggle.addEventListener("click", () => {
+                    // Toggle hiển thị danh sách lớp
+                    classList.style.display = classList.style.display === "block" ? "none" : "block";
+                });
+            }
+
+            const logoutButton = document.querySelector(".logout-btn");
+            if (logoutButton) {
+                logoutButton.addEventListener("click", () => {
+                    fetch("../Login/logout.php", { method: "POST" })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Lỗi khi đăng xuất.");
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                // Xóa session và chuyển về trang đăng nhập
+                                window.location.href = "../Login/log-in.html";
+                            } else {
+                                alert(data.message || "Đăng xuất thất bại.");
+                            }
+                        })
+                        .catch(error => alert("Có lỗi xảy ra: " + error.message));
+                });
+            }
+        }
+        document.getElementById('submit-btn').addEventListener('click', function () {
+            const formData = new FormData(document.getElementById('update-img-form'));
+        
+            fetch('../Update_Img/Update_Img.php', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json()) // Phản hồi JSON từ PHP
+                .then((data) => {
+                    if (data.success) {
+                        // Hiển thị thông báo thành công
+                        showToast(data.message);
+        
+                        // Reload layout để cập nhật avatar mới
+                        fetch("../layout.php")
+                            .then(response => response.text())
+                            .then(layout => {
+                                document.getElementById("layout-container").innerHTML = layout;
+                            });
+        
+                    } else {
+                        // Hiển thị lỗi
+                        showToast(data.message, true);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Lỗi:', error);
+                    showToast('Có lỗi xảy ra khi cập nhật hình ảnh.', true);
+                });
+        });
+        
+        // Hàm hiển thị thông báo (toast)
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = isError ? 'toast error' : 'toast success';
+            toast.textContent = message;
+        
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+        // Lấy phần tử ảnh xem trước
+const avatarInput = document.getElementById('avatar');
+const previewAvatar = document.getElementById('preview-avatar');
+
+// Hiển thị ảnh xem trước khi chọn file
+avatarInput.addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            previewAvatar.src = e.target.result; // Hiển thị ảnh xem trước
+        };
+        reader.readAsDataURL(file); // Đọc tệp ảnh
+    } else {
+        previewAvatar.src = '../Img/DefaultAvatar.png'; // Hiển thị avatar mặc định nếu không có ảnh
+    }
+});
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+/* Đảm bảo video được căn chỉnh hợp lý và hiển thị rõ ràng */
+.class-videos {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-list {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các video được căn chỉnh trên nhiều dòng */
+    gap: 20px;
+    justify-content: flex-start; /* Đảm bảo các video được căn chỉnh đều */
+}
+
+.video {
+    flex: 1 1 calc(25% - 20px); /* Hiển thị 4 video trên một hàng */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.video h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+video {
+    width: 100%; /* Video chiếm 100% chiều rộng của phần tử chứa */
+    height: auto; /* Đảm bảo tỷ lệ của video hợp lý */
+    max-width: 300px; /* Giới hạn chiều rộng tối đa của video */
+    max-height: 200px; /* Giới hạn chiều cao tối đa của video */
+    border-radius: 5px;
+    margin-bottom: 10px;
+    object-fit: contain; /* Đảm bảo video không bị méo hoặc co kéo */
+}
+
+/* Responsive: Điều chỉnh video hiển thị trên 1 hoặc 2 cột với kích thước màn hình nhỏ */
+@media (max-width: 768px) {
+    .video {
+        flex: 1 1 calc(50% - 20px); /* 2 video trên mỗi hàng */
+    }
+}
+
+@media (max-width: 480px) {
+    .video {
+        flex: 1 1 100%; /* 1 video trên mỗi hàng */
+    }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Cá Nhân</title>
+    
+
+    <link rel="stylesheet" href="Personal_Info.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <main>
+        <div id="layout-container"></div>
+
+        <div class="class-h">
+            <h1>Thông Tin Cá Nhân</h1>
+        </div>
+        
+        <div class="profile">
+            <div class="profile-img">
+                <img id="user-avatar" src="../Img/DefaultAvatar.png" alt="User Avatar">
+            </div>
+            <div class="profile-info" id="profile-info">
+                <!-- Thông tin sẽ được tải động từ PHP -->
+            </div>
+        </div>
+        <div class="profile-buttons">
+            <a href="../Update_Img/Update_Img.html"><button>Cập nhật hình ảnh</button></a>
+            <a href="../Update_Info/Update_Info.html"><button>Cập nhật thông tin</button></a>
+        </div>
+    </main>
+
+    <script>
+       // Tải layout
+ fetch("../layout.php")
+ .then(response => response.text())
+ .then(data => {
+     document.getElementById("layout-container").innerHTML = data;
+     initializeLayout();
+ })
+ .catch(error => console.error("Lỗi tải layout:", error));
+
+function initializeLayout() {
+ // Thêm sự kiện click để hiển thị/tắt danh sách lớp
+ const menuToggle = document.querySelector(".menu-item");
+ const classList = document.getElementById("class-list");
+
+ if (menuToggle && classList) {
+    menuToggle.addEventListener("click", () => {
+        // Toggle hiển thị danh sách lớp
+        classList.style.display = classList.style.display === "block" ? "none" : "block";
+    });
+}
+const logoutButton = document.querySelector(".logout-btn");
+if (logoutButton) {
+logoutButton.addEventListener("click", () => {
+fetch("../Login/logout.php", { method: "POST" })
+    .then(response => {
+        if (!response.ok) throw new Error("Lỗi khi đăng xuất.");
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Xóa session và chuyển về trang đăng nhập
+            window.location.href = "../Login/log-in.html";
+        } else {
+            alert(data.message || "Đăng xuất thất bại.");
+        }
+    })
+    .catch(error => alert("Có lỗi xảy ra: " + error.message));
+});
+}
+}
+
+$(document).ready(function () {
+    $.ajax({
+        url: "../Personal_Info/get_personal_info.php",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data.error) {
+                $("#profile-info").html(`<p>${data.error}</p>`);
+            } else {
+                // Cập nhật thông tin cá nhân
+                $("#profile-info").html(`
+                    <h1>Họ và tên: ${data.TenGiangVien}</h1>
+                    <p>Mã giáo viên: ${data.MaGiangVien}</p>
+                    <p>Giới tính: ${data.GT}</p>
+                    <p>Nơi sinh: ${data.NoiSinh}</p>
+                    <p>Ngày sinh: ${data.NgaySinh}</p>
+                    <p>Địa chỉ: ${data.DiaChi}</p>
+                    <p>Số điện thoại: ${data.SDT}</p>
+                    <p>Môn: ${data.MaBoMon}</p>
+                    <p>Chức vụ: ${data.ChucVu}</p>
+                `);
+
+                // Kiểm tra và cập nhật avatar
+                if (data.Avatar && data.Avatar !== "NULL") {
+                    $("#user-avatar").attr("src", data.Avatar);
+                } else {
+                    $("#user-avatar").attr("src", "../Img/DefaultAvatar.png");
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+            $("#profile-info").html(`<p>Lỗi tải dữ liệu: ${error}</p>`);
+        }
+    });
+});
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết Quả Phân Tích</title>
+    <link rel="stylesheet" href="../TraKetQua/KetQua.css">
+</head>
+<body>
+    <header>
+        <h1>Kết Quả Phân Tích Hành Vi</h1>
+    </header>
+
+    <main>
+        <!-- Phần Video -->
+        <section id="video-section">
+            <h2>Video Kết Quả</h2>
+            <video id="result-video" controls>
+                <source src="../static/output1.mp4" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ video.
+            </video>
+        </section>
+
+        <!-- Biểu đồ 1 -->
+        <section id="chart1-section">
+            <h2>Biểu Đồ 1</h2>
+            <img src="../static/engagement_pie_chart.png" alt="Engagement Pie Chart">
+        </section>
+
+        <!-- Biểu đồ 2 -->
+        <section id="chart2-section">
+            <h2>Biểu Đồ 2</h2>
+            <img src="../static/total_score_per_track_id_bar_plot.png" alt="Score Per Track ID">
+        </section>
+
+        <!-- Biểu đồ 3 -->
+        <section id="chart3-section">
+            <h2>Biểu Đồ 3</h2>
+            <img src="../static/action_counts_per_track_id_bar_plot.png" alt="Action Counts Per Track ID">
+        </section>
+
+        <!-- Nút Tải Xuống -->
+        <section id="download-section">
+            <h2>Tải Xuống</h2>
+            <div class="download-buttons">
+                <a href="../static/output1.mp4" download><button>Tải Video</button></a>
+                <a href="../static/engagement_pie_chart.png" download><button>Tải Biểu Đồ 1</button></a>
+                <a href="../static/total_score_per_track_id_bar_plot.png" download><button>Tải Biểu Đồ 2</button></a>
+                <a href="../static/action_counts_per_track_id_bar_plot.png" download><button>Tải Biểu Đồ 3</button></a>
+                <a href="../static/total_scores_with_engagement.csv" download><button>Tải File CSV 1</button></a>
+                <a href="../static/action_statistics_filtered.csv" download><button>Tải File CSV 2</button></a>
+                <a href="../static/action_counts_per_track_id.csv" download><button>Tải File CSV 3</button></a>
+            </div>
+        </section>
+    </main>
+
+   
+</body>
+</html>

@@ -1,0 +1,61 @@
+
+.video-controls {
+    text-align: center;
+    margin: 20px;
+    
+}
+
+.analyze-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4267bd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.analyze-button:hover {
+    background-color: #5073bf;
+}
+.video-player video {
+    max-width: 60%; /* Điều chỉnh theo ý muốn */
+    max-height: 300px; /* Chiều cao tối đa */
+    width: auto;
+    height: auto;
+    margin: 0 auto; /* Canh giữa */
+    display: block;
+}
+
+#video-player {
+    width: 100%; /* Đảm bảo video tự co dãn vừa container */
+    height: auto; /* Giữ nguyên tỷ lệ khung hình */
+    border: 2px solid #ccc; /* Thêm viền nếu cần */
+    border-radius: 10px; /* Bo tròn các góc video */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tạo hiệu ứng đổ bóng */
+}
+
+
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #374785;
+    padding: 10px 20px;
+    color: white;
+}
+
+header .logo {
+    height: 60px; /* Chiều cao logo */
+    width: auto; /* Giữ nguyên tỷ lệ khung hình */
+    max-width: 150px; /* Đảm bảo logo không quá to */
+    cursor: pointer; /* Biến logo thành tương tác */
+}
+
+/* Hiệu ứng hover cho logo */
+header .logo:hover {
+    transform: scale(1.1); /* Phóng to nhẹ logo */
+    transition: transform 0.3s ease; /* Hiệu ứng chuyển động */
+}

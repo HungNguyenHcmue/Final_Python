@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" href="Home.css">
+</head>
+<body>
+    <div id="layout-container"></div>
+    <main>
+        <!-- Video Lớp Class A -->
+        <div class="video-container" id="class-a">
+            <h2>Video Lớp A</h2>
+            <div class="video-list" id="video-list-class-a"></div>
+        </div>
+
+        <!-- Video Lớp Class B -->
+        <div class="video-container" id="class-b">
+            <h2>Video Lớp B</h2>
+            <div class="video-list" id="video-list-class-b"></div>
+        </div>
+
+        <!-- Video Lớp Class C -->
+        <div class="video-container" id="class-c">
+            <h2>Video Lớp C</h2>
+            <div class="video-list" id="video-list-class-c"></div>
+        </div>
+    </main>
+
+    <script>
+        // Tải layout từ file layout.html
+        fetch("../layout.php")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("layout-container").innerHTML = data;
+                initializeLayout(); // Gọi hàm khởi tạo các chức năng liên quan
+            })
+            .catch(error => console.error("Lỗi tải layout:", error));
+
+        function initializeLayout() {
+            loadVideos(); // Gọi hàm tải video sau khi tải layout
+            const menuToggle = document.querySelector(".menu-item");
+            const classList = document.getElementById("class-list");
+    
+            if (menuToggle && classList) {
+                menuToggle.addEventListener("click", () => {
+                    // Toggle hiển thị danh sách lớp
+                    classList.style.display = classList.style.display === "block" ? "none" : "block";
+                });
+            }
+            const logoutButton = document.querySelector(".logout-btn");
+        if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
+            fetch("../Login/logout.php", { method: "POST" })
+                .then(response => {
+                    if (!response.ok) throw new Error("Lỗi khi đăng xuất.");
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Xóa session và chuyển về trang đăng nhập
+                        window.location.href = "../Login/log-in.html";
+                    } else {
+                        alert(data.message || "Đăng xuất thất bại.");
+                    }
+                })
+                .catch(error => alert("Có lỗi xảy ra: " + error.message));
+        });
+        }
+    }
+        
+
+      // Hàm tải video từ PHP
+async function loadVideos() {
+    try {
+        const response = await fetch('video-fetch.php');
+        const videos = await response.json();
+
+        if (videos) {
+            displayVideos(videos); // Hiển thị video nếu có
+        } else {
+            console.log("Không có video");
+        }
+    } catch (error) {
+        console.error('Có lỗi khi tải video:', error);
+    }
+}
+
+// Hàm hiển thị video
+function displayVideos(videos) {
+    // Hiển thị video lớp Class A
+    const videoListClassA = document.getElementById('video-list-class-a');
+    if (videos['Class A']) {
+        videos['Class A'].forEach(video => {
+            videoListClassA.appendChild(createVideoElement(video));
+        });
+    }
+
+    // Hiển thị video lớp Class B
+    const videoListClassB = document.getElementById('video-list-class-b');
+    if (videos['Class B']) {
+        videos['Class B'].forEach(video => {
+            videoListClassB.appendChild(createVideoElement(video));
+        });
+    }
+
+    // Hiển thị video lớp Class C
+    const videoListClassC = document.getElementById('video-list-class-c');
+    if (videos['Class C']) {
+        videos['Class C'].forEach(video => {
+            videoListClassC.appendChild(createVideoElement(video));
+        });
+    }
+}
+
+// Hàm tạo phần tử video HTML
+function createVideoElement(video) {
+    const videoElement = document.createElement('div');
+    videoElement.classList.add('video-item');
+    videoElement.innerHTML = `
+        <video controls autoplay>
+            <source src="${video.video_url}" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+        </video>
+        <p class="description">Đã thêm vào lúc: ${video.added_at}</p>
+    `;
+    return videoElement;
+}
+    </script>
+</body>
+</html>

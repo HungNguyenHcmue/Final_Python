@@ -1,0 +1,102 @@
+/* Cấu trúc chung của trang */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fb;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container chính */
+#layout-container {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* Bố cục chính */
+main {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề */
+h1 {
+    font-size: 28px;
+    color: #374785;
+    margin-bottom: 20px;
+}
+
+/* Form cập nhật thông tin */
+#update-info {
+    background-color: #e5eaf5;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#update-info h3 {
+    font-size: 20px;
+    color: #24305e;
+    margin-bottom: 20px;
+}
+
+#update-info label {
+    display: block;
+    font-size: 16px;
+    color: #374785;
+    margin: 10px 0 5px;
+    text-align: left;
+}
+
+#update-info input[type="text"],
+#update-info input[type="date"],
+#update-info input[type="email"],
+#update-info select {
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+}
+
+#update-info input[type="text"]:focus,
+#update-info input[type="date"]:focus,
+#update-info input[type="email"]:focus,
+#update-info select:focus {
+    border-color: #374785;
+    outline: none;
+}
+
+/* Nút cập nhật */
+#update-info button {
+    background-color: #374785;
+    color: white;
+    font-size: 16px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
+}
+
+#update-info button:hover {
+    background-color: #24305e;
+    transform: translateY(-2px);
+}
+
+/* Hiệu ứng hover khi chọn hình ảnh */
+#update-info input[type="text"]:hover,
+#update-info input[type="date"]:hover,
+#update-info select:hover {
+    background-color: #e1e6f2;
+}

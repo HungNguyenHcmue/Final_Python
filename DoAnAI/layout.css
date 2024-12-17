@@ -1,0 +1,140 @@
+/* Đặt chung toàn bộ trang */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e5eaf5;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #374785;
+    padding: 10px 20px;
+    color: white;
+}
+
+header .logo {
+    height: 50px;
+}
+
+header .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+header .user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header .logout-btn {
+    background-color: #ff4b5c;
+    border: none;
+    padding: 8px 12px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+header .logout-btn:hover {
+    background-color: #ff1f3d;
+}
+
+
+/* Sidebar */
+aside {
+    width: 250px;
+    background-color: #24305e;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+aside nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside nav ul li {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+aside nav ul li:hover {
+    background-color: #374785;
+}
+
+.menu-icon {
+    width: 25px;
+    margin-right: 10px;
+}
+
+.menu-name {
+    text-decoration: none;
+    color: white;
+}
+
+/* Sub-menu */
+/* Đặt lại vị trí của danh sách lớp */
+/* Ẩn danh sách lớp mặc định */
+.sub-menu {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: none; /* Ẩn mặc định */
+    background-color: #374785;
+    border-radius: 5px;
+    position: relative;
+    margin-top: 10px;
+}
+
+/* Hiển thị danh sách lớp khi được bật */
+.sub-menu li {
+    margin: 8px 0;
+    text-align: left;
+}
+
+.class-link {
+    display: block;
+    text-decoration: none;
+    color: white;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #24305e;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.class-link:hover {
+    background-color: #4e6da3;
+    text-decoration: underline;
+}
+
+/* Căn chỉnh menu chính */
+.menu-item {
+    cursor: pointer;
+}
+
+
+
+/* Nội dung chính */
+main {
+    margin-left: 270px;
+    padding: 20px;
+}

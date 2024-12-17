@@ -1,0 +1,74 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../TraKetQua/TraVe.css">
+        <title>Hệ Thống Phát Hiện Hành Vi Trong Lớp Học</title>
+    </head>
+    <body>
+       
+        <header>
+            <img src="../Img/Logo.png" alt="Logo" class="logo">
+        </header>
+        <div class="video-controls">
+            <button onclick="analyzeVideo()" class="analyze-button">Phân Tích Video</button>
+        </div>
+        
+        <div class="video-player">
+            <video id="video-player" controls>
+                <source id="video-source" src="" type="video/mp4">
+                Trình duyệt của bạn không hỗ trợ phát video.
+            </video>
+        </div>
+        <script>
+    // Lấy videoId từ sessionStorage
+    const videoId = sessionStorage.getItem('selectedVideoId');
+
+    // Hàm tải video chi tiết
+    function loadVideoDetail() {
+        if (videoId) {
+            // Gửi yêu cầu lấy thông tin video từ server (dựa trên videoId)
+            fetch(`TraVe.php?id=${videoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.video_path) {
+                        const videoPlayer = document.getElementById("video-player");
+                        const videoSource = document.getElementById("video-source");
+
+                        // Sửa đường dẫn video để trỏ đến thư mục đúng
+                        videoSource.src = `../Class/${data.video_path}`; // Cập nhật đường dẫn
+                        videoPlayer.load();  // Tải lại video
+                    } else {
+                        console.error("Không tìm thấy video với ID:", videoId);
+                    }
+                })
+                .catch(error => console.error("Lỗi khi tải video:", error));
+        } else {
+            console.error("Không có videoId trong sessionStorage");
+        }
+    }
+    // Gọi hàm tải video khi trang được tải
+    loadVideoDetail()
+    function analyzeVideo() {
+        console.log('vui lòng đợi...');
+        // Gửi yêu cầu GET đến API FastAPI để chạy mô hình
+        
+        fetch('http://127.0.0.1:8000/run-model')
+            .then(response => response.json())
+            .then(data => {
+               
+                if (data.status === 'success') {
+                    console.log('Phân tích thành công:', data.output);
+                    window.location.href = "KetQua.html";
+                } else {
+                    console.error('Lỗi khi phân tích:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi kết nối đến server:', error);
+            });
+    }
+        </script>
+    </body>
+    </html>

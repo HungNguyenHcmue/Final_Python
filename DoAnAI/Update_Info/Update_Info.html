@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập Nhật Thông Tin Cá Nhân</title>
+    <link rel="stylesheet" href="../layout.css">
+
+    <link rel="stylesheet" href="Update_Info.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <!-- Container sẽ được tải layout -->
+    <div id="layout-container"></div>
+
+    <main>
+        <div class="class-h">
+            <h1>Cập Nhật Thông Tin Cá Nhân</h1>
+        </div>
+
+        <div id="update-info">
+            <form id="update-info-form">
+                <h3>Cập nhật thông tin cá nhân</h3>
+
+                <label for="name">Họ và tên:</label>
+                <input type="text" id="name" name="name" value="" required>
+
+                <label for="code">Mã giáo viên:</label>
+                <input type="text" id="code" name="code" value="" readonly>
+
+                <label for="gender">Giới tính:</label>
+                <input type="text" id="gender" name="gender" value="" required>
+
+                <label for="birthplace">Nơi sinh:</label>
+                <input type="text" id="birthplace" name="birthplace" value="" required>
+
+                <label for="dob">Ngày sinh:</label>
+                <input type="date" id="dob" name="dob" value="" required>
+
+                <label for="address">Địa chỉ:</label>
+                <input type="text" id="address" name="address" value="" required>
+
+                <label for="phone">Số điện thoại:</label>
+                <input type="text" id="phone" name="phone" value="" required>
+
+                <label for="subject">Môn:</label>
+                <input type="text" id="subject" name="subject" value="" readonly>
+
+                <label for="position">Chức vụ:</label>
+                <input type="text" id="position" name="position" value="" required>
+
+                <button type="submit">Cập nhật thông tin</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+         // Tải layout
+ fetch("../layout.php")
+ .then(response => response.text())
+ .then(data => {
+     document.getElementById("layout-container").innerHTML = data;
+     initializeLayout();
+ })
+ .catch(error => console.error("Lỗi tải layout:", error));
+
+function initializeLayout() {
+ // Thêm sự kiện click để hiển thị/tắt danh sách lớp
+ const menuToggle = document.querySelector(".menu-item");
+ const classList = document.getElementById("class-list");
+
+ if (menuToggle && classList) {
+    menuToggle.addEventListener("click", () => {
+        // Toggle hiển thị danh sách lớp
+        classList.style.display = classList.style.display === "block" ? "none" : "block";
+    });
+}
+const logoutButton = document.querySelector(".logout-btn");
+if (logoutButton) {
+logoutButton.addEventListener("click", () => {
+fetch("../Login/logout.php", { method: "POST" })
+    .then(response => {
+        if (!response.ok) throw new Error("Lỗi khi đăng xuất.");
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Xóa session và chuyển về trang đăng nhập
+            window.location.href = "../Login/log-in.html";
+        } else {
+            alert(data.message || "Đăng xuất thất bại.");
+        }
+    })
+    .catch(error => alert("Có lỗi xảy ra: " + error.message));
+});
+}
+}
+$(document).ready(function () {
+    $.ajax({
+        url: "../Personal_Info/get_personal_info.php",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                // Điền dữ liệu vào form
+                $("#name").val(data.TenGiangVien);
+                $("#code").val(data.MaGiangVien);
+                $("#gender").val(data.GT);
+                $("#birthplace").val(data.NoiSinh);
+                $("#dob").val(data.NgaySinh);
+                $("#address").val(data.DiaChi);
+                $("#phone").val(data.SDT);
+                $("#subject").val(data.MaBoMon);
+                $("#position").val(data.ChucVu);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi tải dữ liệu: ", error);
+            console.error("Chi tiết phản hồi từ server: ", xhr.responseText);
+            alert("Lỗi tải dữ liệu từ server: " + error);
+        }
+    });
+});
+
+      // Cập nhật thông tin cá nhân
+$("#update-info-form").on("submit", function(event) {
+    event.preventDefault();
+    const data = $(this).serialize(); // Serialize dữ liệu form
+
+    $.ajax({
+        url: "../Update_Info/update_personal_info.php", // Đảm bảo đường dẫn đúng
+        method: "POST",
+        data: data,
+        success: function(response) {
+            console.log(response); // Kiểm tra phản hồi từ PHP
+            const jsonResponse = JSON.parse(response);
+            if (jsonResponse.success) {
+                alert("Cập nhật thông tin thành công!");
+            } else {
+                alert("Lỗi khi cập nhật thông tin: " + jsonResponse.error);
+            }
+        },
+        error: function (xhr, status, error) {
+            try {
+                const jsonResponse = JSON.parse(xhr.responseText);
+                alert(jsonResponse.error || "Lỗi không xác định.");
+            } catch (e) {
+                alert("Lỗi khi xử lý phản hồi: " + error);
+            }
+        }
+    });
+});
+
+    </script>
+</body>
+</html>

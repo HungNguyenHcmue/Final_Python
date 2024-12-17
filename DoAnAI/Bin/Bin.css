@@ -1,0 +1,51 @@
+.class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.class-item {
+    position: relative;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 10px;
+}
+
+.class-item video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.restore-button,
+.delete-button {
+    position: absolute;
+    top: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+
+.restore-button {
+    background-color: #4CAF50;
+    left: 10px;
+}
+
+.restore-button:hover {
+    background-color: #45a049;
+}
+
+.delete-button {
+    background-color: #ff4d4d;
+    right: 10px;
+}
+
+.delete-button:hover {
+    background-color: #d93636;
+}
